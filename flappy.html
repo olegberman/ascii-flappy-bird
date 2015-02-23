@@ -1,0 +1,30 @@
+<html>
+  <body style="background-color: #000;">
+      <div id="game" style="width: 400px; height: 380px; font: 12px Courier; color: #f1f1f1;"></div>
+      <script type="text/javascript">
+        var rnd = function() { return Math.round(Math.random() * 20); }
+        var rows = 30, cls = 50, by = 10, ps = [[cls, rnd()], [cls + 30, rnd()]], sc = 0;
+        var p = [ps[0][0], ps[0][1]];
+        var tick = setInterval(function() {
+          if((p[0] <= 12 && p[0] >= 1 && (by <= p[1] || (by >= p[1] + 9))) ||
+          by <= -1 || by >= 29) clearInterval(tick), alert("Game over! Your score: " + sc), location.reload();
+          document.getElementById("game").innerHTML = "";
+          for(var i = 0; i < rows; i++) {
+            s = "";
+            for(var j = 0; j < cls; j++) {
+              if(((j >= ps[0][0] && j <= ps[0][0] + 10) && (i <= ps[0][1] || i >= ps[0][1] + 10)) ||
+                 ((j >= ps[1][0] && j <= ps[1][0] + 10) && (i <= ps[1][1] || i >= ps[1][1] + 10))) s += "u";
+              else if(j >= 11 && j <= 12 && i >= by && i <= by + 1) s += "x";
+              else s += ".";
+            }
+            document.getElementById("game").innerHTML += s + "\n";
+          }
+          p[0]--;
+          if(ps[0][0]-- < -10) p = [ps[1][0], ps[1][1]], ps[0] = [cls, rnd()], sc++;
+          if(ps[1][0]-- < -10) p = [ps[0][0], ps[0][1]], ps[1] = [cls, rnd()], sc++;
+          by++;
+        }, 100);
+        document.onkeyup = function() { by -= 4; return false; }
+      </script>
+  </body>
+</html>
